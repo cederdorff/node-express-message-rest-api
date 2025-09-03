@@ -671,12 +671,8 @@ async function writeMessages(messages) {
 
 ```js
 app.get("/test-read", async (req, res) => {
-  try {
-    const messages = await readMessages();
-    res.json(messages);
-  } catch (error) {
-    res.status(500).json({ error: "Could not read messages" });
-  }
+  const messages = await readMessages();
+  res.json(messages);
 });
 ```
 
@@ -1023,9 +1019,7 @@ Test alle dine endpoints systematisk for at sikre dit API virker korrekt.
    - GET http://localhost:3000/messages/[id]
    - Forventet: Kun den ene besked
 
-3. **Test fejl-case:**
-   - GET http://localhost:3000/messages/forkert-id
-   - Forventet: 404 error
+3. (Valgfrit) Prøv et forkert ID og se hvad du får tilbage.
 
 **Step 2: Test CREATE-operation (POST)**
 
@@ -1035,10 +1029,7 @@ Test alle dine endpoints systematisk for at sikre dit API virker korrekt.
    - Body: `{"text": "Test besked", "sender": "tester"}`
    - Forventet: Status 201 + ny besked med auto-genereret ID
 
-2. **Test validering:**
-   - POST http://localhost:3000/messages
-   - Body: `{"text": "Test"}` (mangler sender)
-   - Forventet: 400 error
+2. Prøv at sende kun `{ "text": "Test" }` og se hvad der sker. Send derefter en komplet besked.
 
 **Step 3: Test UPDATE-operation (PUT)**
 
@@ -1048,9 +1039,7 @@ Test alle dine endpoints systematisk for at sikre dit API virker korrekt.
    - Body: `{"text": "Opdateret!", "sender": "opdateret"}`
    - Forventet: Opdateret besked
 
-2. **Test fejl-cases:**
-   - PUT med forkert ID → 404 error
-   - PUT uden text → 400 error
+2. (Valgfrit) Prøv et forkert ID eller uden text og se hvad der sker.
 
 **Step 4: Test DELETE-operation (DELETE)**
 
