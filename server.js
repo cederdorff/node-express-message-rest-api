@@ -73,7 +73,7 @@ app.put("/messages/:id", async (req, res) => {
   message.sender = sender;
 
   writeMessages(messages);
-  res.json(messages[idx]);
+  res.json(message);
 });
 
 // DELETE /messages/:id - delete message
