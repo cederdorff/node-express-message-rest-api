@@ -2,37 +2,37 @@
   {
     "id": "e1a2c3d4-1111-2222-3333-444455556666",
     "date": "2025-09-03T09:15:00.000Z",
-    "message": "Hej! Hvordan går det?",
+    "text": "Hej! Hvordan går det?",
     "sender": "user"
   },
   {
     "id": "f7b8a9c0-7777-8888-9999-000011112222",
     "date": "2025-09-03T09:16:00.000Z",
-    "message": "Det går fint, tak! Hvordan kan jeg hjælpe dig?",
+    "text": "Det går fint, tak! Hvordan kan jeg hjælpe dig?",
     "sender": "chatbot"
   },
   {
     "id": "aabbccdd-1234-5678-9101-112131415161",
     "date": "2025-09-03T09:17:00.000Z",
-    "message": "Kan du vise mig dagens vejr?",
+    "text": "Kan du vise mig dagens vejr?",
     "sender": "user"
   },
   {
     "id": "bbccddee-2233-4455-6677-889900001111",
     "date": "2025-09-03T09:17:05.000Z",
-    "message": "Selvfølgelig! Her er vejrudsigten for i dag...",
+    "text": "Selvfølgelig! Her er vejrudsigten for i dag...",
     "sender": "chatbot"
   },
   {
     "id": "ccddeeff-3344-5566-7788-990011112222",
     "date": "2025-09-03T09:18:00.000Z",
-    "message": "Tak for hjælpen!",
+    "text": "Tak for hjælpen!",
     "sender": "user"
   },
   {
     "id": "ddeeff00-4455-6677-8899-001122334455",
     "date": "2025-09-03T09:18:10.000Z",
-    "message": "Det var så lidt. Spørg endelig igen!",
+    "text": "Det var så lidt. Spørg endelig igen!",
     "sender": "chatbot"
   }
 ]

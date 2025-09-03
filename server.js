@@ -17,7 +17,6 @@ app.use(cors());
 async function readMessages() {
   const data = await fs.readFile("data/messages.json");
   const messages = JSON.parse(data);
-  messages.sort((messageA, messageB) => new Date(messageA.date) - new Date(messageB.date));
   return messages;
 }
 
@@ -81,10 +80,10 @@ app.delete("/messages/:id", async (req, res) => {
   let messages = await readMessages();
   const messageId = req.params.id;
 
-  const filteredMessages = messages.filter(message => message.id !== messageId);
+  messages = messages.filter(message => message.id !== messageId);
 
-  writeMessages(filteredMessages);
-  res.json(filteredMessages);
+  writeMessages(messages);
+  res.json(messages);
 });
 
 app.listen(PORT, () => {
