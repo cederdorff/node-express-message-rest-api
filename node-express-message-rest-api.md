@@ -18,8 +18,18 @@ race@eaaa.dk
 6. **Opret og start din server** → Express installation og server.js
 7. **Læs og skriv data fra fil** → Helper funktioner og test-routes
 8. **Opret REST routes** → CRUD endpoints (GET, POST, PUT, DELETE)
-9. **Test dit API komplet** → Systematisk test af alle endpoints
-10. **Refleksion og næste skridt** → Opsummering og videre læring
+9. **Test dit API komplet** → Systematisk test af alle en});
+
+````
+
+</details>
+
+**Test med Thunder Client:**
+- Method: PUT
+- URL: http://localhost:3000/messages/[id]
+- Body: `{ "text": "Opdateret!", "sender": "updated-user" }`
+
+### 7.5 DELETE slet beskedleksion og næste skridt** → Opsummering og videre læring
 
 ---
 
@@ -100,7 +110,8 @@ Opsæt ES modules og npm scripts til udvikling:
      "start": "node server.js",
      "dev": "node --watch server.js"
    },
-   ```
+````
+
 5. Gem filen (Ctrl+S eller Cmd+S)
 
 **Hvad gør dette?**
@@ -423,18 +434,35 @@ Tryk Ctrl+C i terminalen når du er færdig.
 
 ## 6. Læs og skriv data fra fil
 
+## 6. Læs og skriv data fra fil
+
 ### Step 1: Tilføj imports
 
-Tilføj disse imports øverst i `server.js`:
+Vi skal kunne arbejde med filer og generere IDs. Hvilke imports skal vi tilføje øverst i `server.js`?
+
+<details>
+<summary>💡 Hint - Hvilke imports?</summary>
 
 ```js
 import fs from "fs/promises";
 import { randomUUID } from "crypto";
 ```
 
-### Step 2: Test læsning
+</details>
 
-Tilføj denne route før `app.listen`:
+### Step 2: Test fil-læsning
+
+Lav en test-route der kan læse din `messages.json` fil:
+
+1. **Opgave:** Lav en GET route til `/test-read`
+2. **Den skal:** Læse filen `data/messages.json` som tekst
+3. **Den skal:** Konvertere teksten til JavaScript objekter
+4. **Den skal:** Sende objekterne som JSON tilbage
+
+**Prøv selv først!** Hvad tror du koden skal være?
+
+<details>
+<summary>💡 Hint - test-read route</summary>
 
 ```js
 app.get("/test-read", async (req, res) => {
@@ -444,15 +472,36 @@ app.get("/test-read", async (req, res) => {
 });
 ```
 
-Test: http://localhost:3000/test-read
+</details>
 
-### Step 3: Test skrivning
+**Test:** http://localhost:3000/test-read
+
+### Step 3: Test fil-skrivning
+
+Lav en test-route der kan tilføje en ny besked:
+
+1. **Opgave:** Lav en GET route til `/test-write`
+2. **Den skal:** Læse eksisterende beskeder
+3. **Den skal:** Lave et nyt besked-objekt med ID, dato, tekst og sender
+4. **Den skal:** Tilføje den nye besked til listen
+5. **Den skal:** Skrive den opdaterede liste tilbage til filen
+
+**Prøv at bygge det step for step!**
+
+**Hint 1:** Hvordan laver du et unikt ID? `randomUUID()`
+**Hint 2:** Hvordan laver du en dato? `new Date().toISOString()`
+**Hint 3:** Hvordan tilføjer du til en array? `.push()`
+
+<details>
+<summary>💡 Hint - test-write route</summary>
 
 ```js
 app.get("/test-write", async (req, res) => {
+  // Læs eksisterende beskeder
   const data = await fs.readFile("data/messages.json", "utf8");
   const messages = JSON.parse(data);
 
+  // Lav ny besked
   const newMessage = {
     id: randomUUID(),
     date: new Date().toISOString(),
@@ -460,15 +509,31 @@ app.get("/test-write", async (req, res) => {
     sender: "server"
   };
 
+  // Tilføj til listen
   messages.push(newMessage);
+
+  // Skriv tilbage til fil
   await fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
+
   res.json(newMessage);
 });
 ```
 
-Test: http://localhost:3000/test-write
+</details>
 
-### Step 4: Lav helper funktioner
+**Test:** http://localhost:3000/test-write
+
+### Step 4: Lav helper-funktioner
+
+Kan du se at vi gentager kode? Lav to hjælpefunktioner:
+
+1. **readMessages()** - skal læse og parse JSON
+2. **writeMessages(messages)** - skal skrive array til fil
+
+**Prøv selv først!**
+
+<details>
+<summary>💡 Hint - Helper funktioner</summary>
 
 ```js
 // Tilføj efter imports
@@ -483,6 +548,15 @@ async function writeMessages(messages) {
 ```
 
 Nu kan test-routes blive kortere:
+
+```js
+app.get("/test-read", async (req, res) => {
+  const messages = await readMessages();
+  res.json(messages);
+});
+```
+
+</details>
 
 ```js
 app.get("/test-read", async (req, res) => {
@@ -575,7 +649,22 @@ app.get("/test-read", async (req, res) => {
 
 ## 7. Opret REST routes
 
+Nu skal vi lave de rigtige API endpoints! Fjern test-routes og lav CRUD operations.
+
 ### 7.1 GET alle beskeder
+
+**Opgave:** Lav en route der returnerer alle beskeder når man besøger `/messages`
+
+**Hvad skal den gøre?**
+
+1. Bruge GET method
+2. Læse alle beskeder med helper-funktionen
+3. Returnere dem som JSON
+
+**Prøv selv først!**
+
+<details>
+<summary>💡 Hint - GET alle beskeder</summary>
 
 ```js
 app.get("/messages", async (req, res) => {
@@ -584,9 +673,25 @@ app.get("/messages", async (req, res) => {
 });
 ```
 
-Test: http://localhost:3000/messages
+</details>
+
+**Test:** http://localhost:3000/messages
 
 ### 7.2 GET én besked
+
+**Opgave:** Lav en route der returnerer én specifik besked baseret på ID
+
+**Hvad skal den gøre?**
+
+1. Bruge GET method med parameter: `/messages/:id`
+2. Læse alle beskeder
+3. Finde den besked der matcher ID'et (brug `.find()`)
+4. Returnere kun den besked
+
+**Tips:** `req.params.id` giver dig ID fra URL'en
+
+<details>
+<summary>💡 Hint - GET én besked</summary>
 
 ```js
 app.get("/messages/:id", async (req, res) => {
@@ -597,9 +702,27 @@ app.get("/messages/:id", async (req, res) => {
 });
 ```
 
-Test: Kopier et ID fra http://localhost:3000/messages og besøg http://localhost:3000/messages/[id]
+</details>
+
+**Test:** Kopier et ID fra alle beskeder og besøg http://localhost:3000/messages/[id]
 
 ### 7.3 POST ny besked
+
+**Opgave:** Lav en route der kan oprette nye beskeder
+
+**Hvad skal den gøre?**
+
+1. Bruge POST method til `/messages`
+2. Læse eksisterende beskeder
+3. Hente `text` og `sender` fra request body (`req.body`)
+4. Lave et nyt besked-objekt med auto-genereret ID og dato
+5. Tilføje den nye besked til listen
+6. Gemme listen og returnere den nye besked
+
+**Prøv selv først!** Tænk på hvad du har lært fra test-write route.
+
+<details>
+<summary>💡 Hint - POST ny besked</summary>
 
 ```js
 app.post("/messages", async (req, res) => {
@@ -619,79 +742,93 @@ app.post("/messages", async (req, res) => {
 });
 ```
 
-**Test det (du skal bruge Thunder Client/Postman):**
+</details>
 
-Vi kan ikke teste POST i browseren - vi skal bruge et API-test tool.
+**Test med Thunder Client:**
 
-**Med Thunder Client (VS Code):**
-
-1. Installer Thunder Client extension i VS Code
-2. Opret ny request:
-   - Method: POST
-   - URL: http://localhost:3000/messages
-   - Body (JSON):
-   ```json
-   {
-     "text": "Min første API besked!",
-     "sender": "user"
-   }
-   ```
-3. Send request
-4. Du skal få den nye besked tilbage
-
-**Verificer at det virker:**
-
-- Besøg http://localhost:3000/messages i browseren
-  Test med Thunder Client:
 - Method: POST
 - URL: http://localhost:3000/messages
 - Body: `{ "text": "Min første API besked!", "sender": "user" }`
 
 ### 7.4 PUT opdater besked
 
+**Opgave:** Lav en route der kan opdatere en eksisterende besked
+
+**Hvad skal den gøre?**
+
+1. Bruge PUT method til `/messages/:id`
+2. Læse alle beskeder
+3. Finde den rigtige besked med `find()` (ikke findIndex!)
+4. Opdatere besked-objektets egenskaber direkte
+5. Gemme og returnere den opdaterede besked
+
+**Tænk over det:**
+
+- Skal du finde besked-positionen eller selve besked-objektet?
+- Kan du ændre egenskaber direkte på objektet?
+
+**Tips:**
+
+- `find()` returnerer selve objektet
+- Du kan sætte `message.text = newText` direkte
+- Objekter i JavaScript er references - ændringer påvirker originalen
+
+<details>
+<summary>💡 Hint - PUT opdater besked</summary>
+
 ```js
 app.put("/messages/:id", async (req, res) => {
   const messages = await readMessages();
   const messageId = req.params.id;
+  const message = messages.find(message => message.id === messageId);
+
   const { text, sender } = req.body;
+  message.text = text;
+  message.sender = sender;
 
-  // Find beskeden
-  const messageIndex = messages.findIndex(m => m.id === messageId);
+  writeMessages(messages);
+  res.json(message);
+});
+```
 
-  // Opdater beskeden (behold ID og date)
-  messages[messageIndex] = {
-    ...messages[messageIndex],
+</details>
     text,
     sender
   };
 
-  await writeMessages(messages);
-  res.json(messages[messageIndex]);
-});
-```
-
-**Hvad sker der?**
-
-- `findIndex()` finder besked-position i array
-- `...messages[messageIndex]` bevarer eksisterende felter (ID, date)
-- Kun `text` og `sender` opdateres
-
-**Test det med Thunder Client:**
-
-1. **Først - find en besked at opdatere:**
-
-   - GET http://localhost:3000/messages
-   - Kopier et ID
-
-2. **Opdater beskeden:**
-
-Test med Thunder Client:
+await writeMessages(messages);
+**Test med Thunder Client:**
 
 - Method: PUT
 - URL: http://localhost:3000/messages/[id]
 - Body: `{ "text": "Opdateret!", "sender": "updated-user" }`
 
 ### 7.5 DELETE slet besked
+
+});
+
+````
+
+</details>
+
+### 7.5 DELETE slet besked
+
+**Opgave:** Lav en route der kan slette en besked
+
+**Hvad skal den gøre?**
+
+1. Bruge DELETE method til `/messages/:id`
+2. Læse alle beskeder
+3. Finde besked-positionen
+4. Gemme beskeden før sletning (til response)
+5. Fjerne beskeden fra array med `splice()`
+6. Gemme opdateret liste
+7. Returnere bekræftelse + den slettede besked
+
+**Tips:** `splice(index, 1)` fjerner 1 element på position `index`
+
+<details>
+<summary>💡 Hint - DELETE slet besked</summary>
 
 ```js
 app.delete("/messages/:id", async (req, res) => {
@@ -709,9 +846,11 @@ app.delete("/messages/:id", async (req, res) => {
     deletedMessage
   });
 });
-```
+````
 
-Test med Thunder Client:
+</details>
+
+**Test med Thunder Client:**
 
 - Method: DELETE
 - URL: http://localhost:3000/messages/[id]
