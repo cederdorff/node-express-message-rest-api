@@ -20,17 +20,6 @@ race@eaaa.dk
 8. **Opret REST routes** → CRUD endpoints (GET, POST, PUT, DELETE)
 9. **Test dit API komplet** → Systematisk test af alle en});
 
-````
-
-</details>
-
-**Test med Thunder Client:**
-- Method: PUT
-- URL: http://localhost:3000/messages/[id]
-- Body: `{ "text": "Opdateret!", "sender": "updated-user" }`
-
-### 7.5 DELETE slet beskedleksion og næste skridt** → Opsummering og videre læring
-
 ---
 
 ## 0. Forudsætninger
@@ -105,12 +94,13 @@ Opsæt ES modules og npm scripts til udvikling:
 2. Find linjen med `"main": "server.js",`
 3. Tilføj en ny linje efter denne: `"type": "module",`
 4. Find sektionen `"scripts"` og erstat med:
+
    ```json
    "scripts": {
      "start": "node server.js",
      "dev": "node --watch server.js"
    },
-````
+   ```
 
 5. Gem filen (Ctrl+S eller Cmd+S)
 
@@ -431,8 +421,6 @@ Tryk Ctrl+C i terminalen når du er færdig.
 **✅ Server kører på localhost:3000?** → Fortsæt til **Opgave 6**
 
 ---
-
-## 6. Læs og skriv data fra fil
 
 ## 6. Læs og skriv data fra fil
 
@@ -953,3 +941,7 @@ Stil spørgsmål og reflekter over hvert trin.
 ---
 
 Sig til hvis du vil have flere opgaver, billeder eller forklaringer til hvert trin!
+
+```
+
+```
