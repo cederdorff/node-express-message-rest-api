@@ -25,6 +25,7 @@ function writeMessages(messages) {
   fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
 }
 
+// ========= Define API Endpoints ========== //
 app.get("/", (request, response) => {
   response.send("Node.js Messages REST API 🎉");
 });
@@ -86,6 +87,7 @@ app.delete("/messages/:id", async (req, res) => {
   res.json(messages);
 });
 
+// ========== Start the server ========== //
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log(`App is running on http://localhost:${PORT}`);
