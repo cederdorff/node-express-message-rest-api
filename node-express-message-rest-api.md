@@ -1,4 +1,4 @@
-# Node.js REST API med Express – Opgaveguide
+# Node Express Message REST API
 
 Rasmus Cederdorff (RACE)  
 Senior Lecturer & Web App Developer  
@@ -792,24 +792,12 @@ app.put("/messages/:id", async (req, res) => {
 ```
 
 </details>
-    text,
-    sender
-  };
 
-await writeMessages(messages);
 **Test med Thunder Client:**
 
 - Method: PUT
 - URL: http://localhost:3000/messages/[id]
 - Body: `{ "text": "Opdateret!", "sender": "updated-user" }`
-
-### 7.5 DELETE slet besked
-
-});
-
-````
-
-</details>
 
 ### 7.5 DELETE slet besked
 
@@ -846,7 +834,7 @@ app.delete("/messages/:id", async (req, res) => {
     deletedMessage
   });
 });
-````
+```
 
 </details>
 
