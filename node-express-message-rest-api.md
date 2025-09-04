@@ -10,17 +10,17 @@ race@eaaa.dk
 
 **Du kommer til at gennemgå følgende opgaver i rækkefølge:**
 
-0. **Forudsætninger** → Sikr at Node.js og VS Code er installeret
-1. **Opret projektet** → Ny mappe og åbn i VS Code
-2. **Initialiser Node.js-projektet** → `npm init` og `package.json`
-3. **Konfigurer package.json og scripts** → ES modules og npm scripts
-4. **Opret data-mappe og besked-fil** → JSON fil med eksempel-data
-5. **Opret og start din server** → Express installation og server.js
-6. **Læs og skriv data fra fil** → Helper funktioner og test-routes
-7. **Opret REST routes** → CRUD endpoints (GET, POST, PUT, DELETE)
-8. **Test dit API komplet** → Systematisk test af alle endpoints
-9. **Refleksion og næste skridt** → Forbedringer og videre udvikling
-10. **🚀 EKSTRAOPGAVE: Professionel API-udvikling** → Statuskoder, fejlhåndtering og avancerede features
+- **Forudsætninger** → Sikr at Node.js og VS Code er installeret
+- **Opret projektet** → Ny mappe og åbn i VS Code
+- **Initialiser Node.js-projektet** → `npm init` og `package.json`
+- **Konfigurer package.json og scripts** → ES modules og npm scripts
+- **Opret data-mappe og besked-fil** → JSON fil med eksempel-data
+- **Opret og start din server** → Express installation og server.js
+- **Læs og skriv data fra fil** → Helper funktioner og test-routes
+- **Opret REST routes** → CRUD endpoints (GET, POST, PUT, DELETE)
+- **Test dit API komplet** → Systematisk test af alle endpoints
+- **Refleksion og næste skridt** → Forbedringer og videre udvikling
+- **🚀 EKSTRAOPGAVE: Professionel API-udvikling** → Statuskoder, fejlhåndtering og avancerede features
 
 ---
 
