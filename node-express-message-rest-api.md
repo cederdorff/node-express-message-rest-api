@@ -9,7 +9,6 @@ race@eaaa.dk
 ## Oversigt over opgaver
 
 **Du kommer til at gennemgå følgende opgaver i rækkefølge:**
-
 - **Forudsætninger** → Sikr at Node.js og VS Code er installeret
 - **Opret projektet** → Ny mappe og åbn i VS Code
 - **Initialiser Node.js-projektet** → `npm init` og `package.json`
@@ -94,7 +93,7 @@ Opsæt ES modules og npm scripts til udvikling:
 
 1. Åbn `package.json` i VS Code
 2. Find linjen med `"main": "server.js",`
-3. Tilføj en ny linje efter denne: `"type": "module",`
+3. Tilføj en ny linje efter denne: `"type": "module",` - hvis der allerede er defineret en `"type"` skal du sørge for at ændre den til `"module"`.
 4. Find sektionen `"scripts"` og erstat med:
 
    ```json
@@ -194,9 +193,7 @@ Eller se VS Code's error-meddelelser i Problems-panelet.
 dit-projekt-navn/
 ├── data/
 │   └── messages.json
-├── node_modules/
-├── package.json
-└── package-lock.json
+└── package.json
 ```
 
 <details>
@@ -289,6 +286,18 @@ app.listen(PORT, () => {
 4. Du skal se: "Node.js Messages REST API 🎉"
 
 Fungerer det? Perfekt! Nu svarer din server på requests. ✅
+
+
+**Din projektstruktur skal nu se sådan ud:**
+
+```
+dit-projekt-navn/
+├── data/
+│   └── messages.json
+├── node_modules/
+├── package.json
+└── package.json
+```
 
 ---
 
