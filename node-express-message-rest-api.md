@@ -966,11 +966,6 @@ Overvej hvordan du kan forbedre og udvide dit API.
 - Kan du tilføje sortering eller filtrering?
 - Hvordan kan du udvide med fejlhåndtering?
 
-<details>
-<summary>Hint</summary>
-Prøv fx at lave en helper-funktion til at læse og skrive data.
-</details>
-
 ---
 
 ## 10. 🚀 EKSTRAOPGAVE: Professionel API-udvikling
