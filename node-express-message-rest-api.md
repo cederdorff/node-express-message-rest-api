@@ -20,6 +20,7 @@ race@eaaa.dk
 7. **Opret REST routes** → CRUD endpoints (GET, POST, PUT, DELETE)
 8. **Test dit API komplet** → Systematisk test af alle endpoints
 9. **Refleksion og næste skridt** → Forbedringer og videre udvikling
+10. **🚀 EKSTRAOPGAVE: Professionel API-udvikling** → Statuskoder, fejlhåndtering og avancerede features
 
 ---
 
@@ -27,8 +28,8 @@ race@eaaa.dk
 
 Sikr at du har Node.js og VS Code installeret:
 
-- **Node.js** - Åbn terminal og skriv `node --version` (skal vise 20.x eller nyere)
-- **VS Code** - Åbn VS Code og tjek at det starter
+- **Node.js** - Åbn terminal og skriv `node --version` (skal vise 20.x eller nyere).
+- **VS Code** og nødvendige extensions - Åbn VS Code og tjek at det starter.
 
 <details>
 <summary>Hint - Hvor downloader jeg Node.js?</summary>
@@ -42,9 +43,9 @@ Efter installation, genstart din computer hvis nødvendigt.
 
 ## 1. Opret projektet
 
-1. Opret en ny mappe der hvor du plejer at placere dine projekter
+1. Opret en ny mappe der hvor du plejer at placere dine projekter.
 2. Giv mappen et sigende navn, fx `node-express-message-rest-api`
-3. Højreklik på mappen og vælg "Open with Code" (eller åbn VS Code og træk mappen ind)
+3. Højreklik på mappen og vælg "Open with Code" (eller åbn VS Code og træk mappen ind). Du kan også bruge terminalen og kommandoen `code .` til at åbne projektmappen i VS Code
 4. Du skal nu se din tomme mappe i VS Code's file explorer
 
 <details>
@@ -58,7 +59,7 @@ Efter installation, genstart din computer hvis nødvendigt.
 
 ## 2. Initialiser Node.js-projektet
 
-1. Åbn terminalen i VS Code (Terminal → New Terminal)
+1. Åbn terminalen i VS Code (Terminal → New Terminal). Hvis du er på en PC, så sørg for at anvende Command Prompt.
 2. Skriv `npm init` og tryk Enter
 3. Besvar spørgsmålene:
    - **entry point**: Skriv `server.js` (VIGTIGT!)
@@ -137,7 +138,7 @@ Eller se VS Code's error-meddelelser i Problems-panelet.
 
 1. Højreklik i VS Code's file explorer → "New Folder" → kald den `data`
 2. Højreklik på `data` mappen → "New File" → kald den `messages.json`
-3. Åbn `messages.json` og indsæt dette eksempel-data:
+3. Åbn `messages.json` og indsæt dette eksempel-data (du må selvfølgelig også gerne lave dit eget datasæt, men guiden forventer at du har et array med message-objekter bestående af `id`, `date`, `text` og `sender`):
 
 ```json
 [
@@ -182,8 +183,8 @@ Eller se VS Code's error-meddelelser i Problems-panelet.
 
 **Hvad betyder dette format?**
 
-- `[]` = en array (liste) med objekter
-- Hver besked er et objekt `{}` med egenskaber
+- `[]` = en array (liste) med objekter (`message`-objekter)
+- Hver `message` er et objekt `{}` med egenskaberne `id`, `date`, `text` og `sender`.
 - Objekterne er adskilt med kommaer
 - Dette format gør det nemt for vores API at læse og skrive beskeder
 
@@ -214,7 +215,7 @@ Det ligner JavaScript objekter, men alt skal være i anførselstegn.
 
 </details>
 
-**✅ Data-mappe og messages.json oprettet?** → Fortsæt til **Opgave 5**
+**✅ Data-mappe og messages.json med indhold oprettet?** → Fortsæt til **Opgave 5**
 
 ---
 
@@ -263,7 +264,7 @@ app.get("/", (req, res) => {
 });
 ```
 
-**Sådan ser din server.js ud nu:**
+**Sådan ser din `server.js` ud nu:**
 
 ```js
 import express from "express";
@@ -359,7 +360,7 @@ app.listen(PORT, () => {
 
 **Test igen:**
 
-1. Stop og genstart serveren
+1. Stop og genstart serveren (eller behøver du det?)
 2. Tjek at http://localhost:3000 stadig virker
 
 ---
@@ -425,7 +426,7 @@ Tryk Ctrl+C i terminalen når du er færdig.
 
 ## 6. Læs og skriv data fra fil
 
-### Step 1: Tilføj imports
+### 6.1: Tilføj imports
 
 Vi skal kunne arbejde med filer og generere IDs. Hvilke imports skal vi tilføje øverst i `server.js`?
 
@@ -437,9 +438,14 @@ import fs from "fs/promises";
 import { randomUUID } from "crypto";
 ```
 
+**Hvad gør disse imports?**
+
+- `fs/promises` - Lader os læse og skrive filer asynkront
+- `randomUUID` - Genererer unikke IDs til nye beskeder
+
 </details>
 
-### Step 2: Test fil-læsning
+### 6.2: Test fil-læsning
 
 Lav en test-route der kan læse din `messages.json` fil:
 
@@ -461,11 +467,19 @@ app.get("/test-read", async (req, res) => {
 });
 ```
 
+**Hvad sker der her?**
+
+- `fs.readFile()` læser filen som tekst
+- `JSON.parse()` konverterer tekst til JavaScript objekter
+- `res.json()` sender objekterne tilbage som JSON
+
 </details>
 
-**Test:** http://localhost:3000/test-read
+**Test nu:** http://localhost:3000/test-read
 
-### Step 3: Test fil-skrivning
+- Ser du alle dine beskeder?
+
+### 6.3: Test fil-skrivning
 
 Lav en test-route der kan tilføje en ny besked:
 
@@ -508,11 +522,21 @@ app.get("/test-write", async (req, res) => {
 });
 ```
 
+**Hvad sker der her?**
+
+- Vi læser alle beskeder først
+- Laver et nyt besked-objekt med auto-genereret ID og tidsstempel
+- Tilføjer det til listen med `.push()`
+- Skriver hele listen tilbage til filen
+
 </details>
 
-**Test:** http://localhost:3000/test-write
+**Test nu:** http://localhost:3000/test-write
 
-### Step 4: Lav helper-funktioner
+- Tjek din `messages.json` fil - er der en ny besked?
+- Test `/test-read` igen - ser du den nye besked?
+
+### 6.4: Lav helper-funktioner
 
 Kan du se at vi gentager kode? Lav to hjælpefunktioner:
 
@@ -525,7 +549,7 @@ Kan du se at vi gentager kode? Lav to hjælpefunktioner:
 <summary>💡 Hint - Helper funktioner</summary>
 
 ```js
-// Tilføj efter imports
+// Tilføj disse funktioner efter imports
 async function readMessages() {
   const data = await fs.readFile("data/messages.json", "utf8");
   return JSON.parse(data);
@@ -536,17 +560,29 @@ async function writeMessages(messages) {
 }
 ```
 
-Nu kan test-routes blive kortere:
+**Fordele ved helper funktioner:**
 
-```js
-app.get("/test-read", async (req, res) => {
-  const messages = await readMessages();
-  res.json(messages);
-});
-```
+- Mindre gentagelse af kode
+- Nemmere at vedligeholde
+- Bedre læsbarhed
 
 </details>
 
+### 6.5: Brug helper-funktioner i fil-læsning
+
+**Opgave:** Nu skal du refactore din `/test-read` route til at bruge helper-funktionen.
+
+**Tænk over det:**
+
+- Du har nu en `readMessages()` funktion
+- Den gør præcis det samme som de første to linjer i din test-read route
+- Kan du erstatte de to linjer med ét enkelt kald?
+
+**Prøv selv først!** Din route skal blive meget kortere.
+
+<details>
+<summary>💡 Løsning - Refactored test-read</summary>
+
 ```js
 app.get("/test-read", async (req, res) => {
   const messages = await readMessages();
@@ -554,18 +590,35 @@ app.get("/test-read", async (req, res) => {
 });
 ```
 
-### Step 3: Lav en test-route til at skrive beskeder
+**Sammenlign:** Fra 3 linjer kode til 2 linjer - meget mere læsbart!
 
-**Hvad gør vi?**
-Vi laver en route der kan tilføje en ny besked for at teste skrive-funktionaliteten.
+</details>
+
+**Test igen:** http://localhost:3000/test-read
+
+- Virker det stadig?
+
+### 6.6: Brug helper-funktioner i fil-skrivning
+
+**Opgave:** Nu skal du refactore din `/test-write` route til at bruge begge helper-funktioner.
+
+**Tænk over det:**
+
+- Du kan bruge `readMessages()` i stedet for de første to linjer
+- Du kan bruge `writeMessages(messages)` i stedet for `fs.writeFile()`
+- Hvilke linjer skal du ændre?
+
+**Prøv selv først!** Find de steder hvor du kan bruge helper-funktionerne.
+
+<details>
+<summary>💡 Løsning - Refactored test-write</summary>
 
 ```js
-app.post("/test-write", async (req, res) => {
+app.get("/test-write", async (req, res) => {
   // Læs eksisterende beskeder
-  const data = await fs.readFile("data/messages.json", "utf8");
-  const messages = JSON.parse(data);
+  const messages = await readMessages();
 
-  // Lav en test-besked
+  // Lav ny besked
   const newMessage = {
     id: randomUUID(),
     date: new Date().toISOString(),
@@ -577,62 +630,25 @@ app.post("/test-write", async (req, res) => {
   messages.push(newMessage);
 
   // Skriv tilbage til fil
-  await fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
+  await writeMessages(messages);
 
-  res.json({ success: true, message: newMessage });
+  res.json(newMessage);
 });
 ```
 
-**Hvad sker der her?**
+**Fordele:**
 
-- `randomUUID()` genererer et unikt ID
-- `new Date().toISOString()` laver et tidsstempel
-- `JSON.stringify(..., null, 2)` konverterer til pænt formateret JSON
-- `fs.writeFile()` skriver til filen
-
-**Test det:**
-
-1. Åbn browser: http://localhost:3000/test-write
-2. Tjek din `messages.json` fil - der skulle være en ny besked!
-3. Test http://localhost:3000/test-read igen - du skal se den nye besked
-
-**Virker det?** Fantastisk! Nu kan du læse og skrive til filer. ✅---
-
-### Step 4: Lav helper funktioner (valgfrit men smart)
-
-**Hvorfor helper funktioner?**
-Vi kommer til at læse og skrive beskeder mange gange. Lad os lave genbrugelige funktioner.
-
-**Tilføj disse funktioner efter dine imports:**
-
-```js
-// Helper funktioner
-async function readMessages() {
-  const data = await fs.readFile("data/messages.json", "utf8");
-  return JSON.parse(data);
-}
-
-async function writeMessages(messages) {
-  await fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
-}
-```
-
-**Nu kan dine test-routes blive kortere:**
-
-```js
-app.get("/test-read", async (req, res) => {
-  const messages = await readMessages();
-  res.json(messages);
-});
-```
-
-**Fordele ved helper funktioner:**
-
-- Mindre gentagelse af kode
+- Kortere og mere læsbar kode
 - Nemmere at vedligeholde
-- Bedre læsbarhed
+- Hvis filstien ændres, skal du kun rette ét sted
 
-**✅ Kan læse og skrive til messages.json?** → Fortsæt til **Opgave 7**
+</details>
+
+**Test igen:** http://localhost:3000/test-write
+
+- Virker det stadig?
+
+**✅ Kan læse og skrive til messages.json med helper-funktioner?** → Fortsæt til **Opgave 7**
 
 ---
 
@@ -796,16 +812,18 @@ app.put("/messages/:id", async (req, res) => {
 
 1. Bruge DELETE method til `/messages/:id`
 2. Læse alle beskeder
-3. Finde besked-positionen
-4. Gemme beskeden før sletning (til response)
-5. Fjerne beskeden fra array med `splice()`
-6. Gemme opdateret liste
-7. Returnere bekræftelse + den slettede besked
+3. Finde og gemme beskeden der skal slettes
+4. Fjerne beskeden fra array
+5. Gemme opdateret liste
+6. Returnere bekræftelse + den slettede besked
 
-**Tips:** `splice(index, 1)` fjerner 1 element på position `index`
+**To måder at fjerne elementer:**
+
+- **Metode 1:** `findIndex()` + `splice()` - finder position og fjerner
+- **Metode 2:** `find()` + `filter()` - finder element og laver ny array
 
 <details>
-<summary>💡 Hint - DELETE slet besked</summary>
+<summary>💡 Hint - DELETE med findIndex + splice</summary>
 
 ```js
 app.delete("/messages/:id", async (req, res) => {
@@ -824,6 +842,32 @@ app.delete("/messages/:id", async (req, res) => {
   });
 });
 ```
+
+**Fordele:** Modificerer eksisterende array direkte
+
+</details>
+
+<details>
+<summary>💡 Hint - DELETE med find + filter (alternativ)</summary>
+
+```js
+app.delete("/messages/:id", async (req, res) => {
+  const messages = await readMessages();
+  const messageId = req.params.id;
+
+  const deletedMessage = messages.find(m => m.id === messageId);
+  const updatedMessages = messages.filter(m => m.id !== messageId);
+
+  await writeMessages(updatedMessages);
+
+  res.json({
+    message: "Message deleted successfully",
+    deletedMessage
+  });
+});
+```
+
+**Fordele:** Mere funktionel tilgang, nemmere at forstå
 
 </details>
 
@@ -917,6 +961,124 @@ Overvej hvordan du kan forbedre og udvide dit API.
 <summary>Hint</summary>
 Prøv fx at lave en helper-funktion til at læse og skrive data.
 </details>
+
+---
+
+## 10. 🚀 EKSTRAOPGAVE: Professionel API-udvikling
+
+**⚠️ Dette er en frivillig ekstraopgave for dem der vil lære mere!**
+
+Nu har du et fungerende API, men hvordan gør man det mere professionelt? Her er nogle vigtige forbedringer at overveje:
+
+### 10.1: HTTP Statuskoder
+
+**Problem:** Dit API returnerer altid status 200, selvom der sker fejl.
+
+**Opgave:** Tilføj korrekte statuskoder til dine routes:
+
+- **200 OK** - Succesfuld GET/PUT
+- **201 Created** - Succesfuld POST
+- **404 Not Found** - Besked findes ikke
+- **400 Bad Request** - Ugyldig data
+
+<details>
+<summary>💡 Hint - Statuskoder i Express</summary>
+
+```js
+// 201 Created for POST
+res.status(201).json(newMessage);
+
+// 404 Not Found
+if (!message) {
+  return res.status(404).json({ error: "Message not found" });
+}
+
+// 400 Bad Request
+if (!text || !sender) {
+  return res.status(400).json({ error: "Text and sender are required" });
+}
+```
+
+</details>
+
+### 10.2: Fejlhåndtering
+
+**Problem:** Hvis filen ikke findes eller er korrupt, crasher dit API.
+
+**Opgave:** Tilføj try-catch til dine helper-funktioner:
+
+<details>
+<summary>💡 Hint - Fejlhåndtering</summary>
+
+```js
+async function readMessages() {
+  try {
+    const data = await fs.readFile("data/messages.json", "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading messages:", error);
+    return []; // Return empty array if file doesn't exist
+  }
+}
+```
+
+</details>
+
+### 10.3: Input-validering
+
+**Problem:** Brugere kan sende tom data eller forkerte datatyper.
+
+**Opgave:** Valider input i POST og PUT routes:
+
+- Tjek at `text` og `sender` er til stede
+- Tjek at `text` ikke er tom
+- Tjek at ID findes ved UPDATE/DELETE
+
+### 10.4: Andre forbedringer
+
+**Overvej disse forbedringer:**
+
+1. **Pagination** - Hvad hvis du har 10.000 beskeder?
+2. **Søgning** - `/messages?search=hej`
+3. **Sortering** - `/messages?sort=date`
+4. **Logging** - Log alle requests for debugging
+5. **Rate limiting** - Begræns antal requests per bruger
+6. **CORS konfiguration** - Kun bestemte domæner
+7. **Environment variables** - PORT og filstier i .env fil
+
+<details>
+<summary>💡 Eksempel - Søgning og sortering</summary>
+
+```js
+app.get("/messages", async (req, res) => {
+  let messages = await readMessages();
+
+  // Søgning
+  if (req.query.search) {
+    messages = messages.filter(m => m.text.toLowerCase().includes(req.query.search.toLowerCase()));
+  }
+
+  // Sortering
+  if (req.query.sort === "date") {
+    messages.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  res.json(messages);
+});
+```
+
+</details>
+
+### 10.5: Test dit forbedrede API
+
+**Opgave:** Prøv at bryde dit API og se hvordan det håndterer fejl:
+
+1. Slet `messages.json` filen og prøv GET
+2. Send POST uden `text` felt
+3. Prøv PUT med forkert ID
+4. Send ugyldig JSON data
+
+**✅ Kan dit API håndtere fejl elegant?**
 
 ---
 
