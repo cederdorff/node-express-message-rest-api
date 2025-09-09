@@ -22,10 +22,12 @@ Denne guide hjælper dig med at bygge et REST endpoint, hvor du trin-for-trin ti
 
 - `.filter()` bruges til at lave et nyt array med kun de elementer der opfylder en betingelse.
 - Prøv i en separat fil eller browser-konsollen:
+
   - `[1,2,3,4].filter(n => n > 2)`
   - Hvad får du tilbage?
 
 - Filtrering på et array af objekter. Forestil dig at du har dette array:
+
 ```js
 const persons = [
   { name: "Anna", age: 22 },
@@ -34,10 +36,12 @@ const persons = [
   { name: "David", age: 15 }
 ];
 ```
+
 - Brug `.filter()` til at finde alle personer over 18 år.
 - Brug `.filter()` til at finde alle personer hvor navnet indeholder "a" (store/små bogstaver er ligegyldigt).
 
 **Test:**
+
 - Hvilket array får du hvis du filtrerer på age > 18?
 - Hvilket array får du hvis du filtrerer på name indeholder "a"?
 
@@ -97,6 +101,20 @@ app.get("/messages", async (req, res) => {
 });
 ```
 
+</details>
+
+### Ekstraopgave: Filtrering på `sender`
+
+- Udvid din route så man også kan filtrere på hvem der har sendt beskeden, fx `/messages?sender=user` eller `/messages?sender=chatbot`.
+- Hvis der er en `sender` query param, så lav et nyt array med kun de beskeder hvor `sender` matcher (store/små bogstaver skal ikke have betydning).
+
+**Test:**
+
+- Prøv `/messages?sender=user` og `/messages?sender=chatbot` og tjek at du kun får beskeder fra den valgte afsender.
+
+<details>
+<summary>💡 Hint til sender-opgaven</summary>
+Brug `message.sender && message.sender.toLowerCase().includes(req.query.sender.toLowerCase())` i din filter-funktion.
 </details>
 
 ---
