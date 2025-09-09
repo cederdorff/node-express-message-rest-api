@@ -32,8 +32,59 @@ app.get("/", (request, response) => {
 
 // GET /messages - get all messages
 app.get("/messages", async (req, res) => {
-  const messages = await readMessages();
-  res.json(messages);
+  /**
+   * GET /messages
+   * Eksempel på brug:
+   *   /messages?search=hej&sort=-date&page=2&limit=3
+   *
+   * Query params:
+   *   search: filtrer på tekst
+   *   sort: "date" (ældste først) eller "-date" (nyeste først)
+   *   page: sidetal (starter fra 1)
+   *   limit: antal beskeder per side
+   *
+   * Eksempel på svar:
+   * {
+   *   total: 12,
+   *   page: 2,
+   *   limit: 3,
+   *   data: [ { id, text, ... }, ... ]
+   * }
+   */
+
+  // 1. Læs alle beskeder fra fil
+  let messages = await readMessages();
+
+  // 2. Filtrering på tekst (hvis ?search=tekst)
+  if (req.query.search) {
+    const search = req.query.search.toLowerCase();
+    messages = messages.filter(
+      message => message.text.toLowerCase().includes(search)
+      // Hvis du vil inkludere sender, tilføj: || (message.sender && message.sender.toLowerCase().includes(search))
+    );
+  }
+
+  // 3. Sortering på dato (hvis ?sort=-date, ellers ældste først)
+  if (req.query.sort === "-date") {
+    messages.sort((messageA, messageB) => new Date(messageB.date) - new Date(messageA.date));
+  } else {
+    messages.sort((messageA, messageB) => new Date(messageA.date) - new Date(messageB.date));
+  }
+
+  // 4. Paginering (?page=1&limit=10)
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || messages.length;
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const paginatedMessages = messages.slice(start, end);
+
+  // 5. Returnér samlet antal, side, limit og data
+  res.json({
+    total: messages.length,
+    page,
+    limit,
+    data: paginatedMessages
+  });
 });
 
 // GET /messages/:id - get message by id
