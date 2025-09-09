@@ -10,7 +10,7 @@ const PORT = 3000;
 
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
-app.use(cors()); // Enable CORS
+app.use(cors()); // Enable CORS for all routes - allow requests from any origin
 
 // ========== File Helper Operations ========== //
 // Helper: Read messages from file
