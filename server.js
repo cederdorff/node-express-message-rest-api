@@ -26,34 +26,33 @@ async function writeMessages(messages) {
 }
 
 // ========= Define API Endpoints ========== //
+
+// Root endpoint
+// Request: GET /
+// Response: "Node.js Messages REST API 🎉"
 app.get("/", (request, response) => {
   response.send("Node.js Messages REST API 🎉");
 });
 
-// GET /messages - get all messages
+/**
+ * GET /messages
+ * Eksempel på brug:
+ *   /messages?search=hej&sort=-date&page=2&limit=3
+ *
+ * Request: GET /messages?search=hej&sort=-date&page=2&limit=3
+ * Response:
+ * {
+ *   "total": 12,
+ *   "page": 2,
+ *   "limit": 3,
+ *   "data": [ { "id": "...", "text": "...", ... }, ... ]
+ * }
+ *
+ * Statuskoder: 200 OK, 500 Server Error
+ */
 app.get("/messages", async (req, res) => {
-  /**
-   * GET /messages
-   * Eksempel på brug:
-   *   /messages?search=hej&sort=-date&page=2&limit=3
-   *
-   * Query params:
-   *   search: filtrer på tekst
-   *   sort: "date" (ældste først) eller "-date" (nyeste først)
-   *   page: sidetal (starter fra 1)
-   *   limit: antal beskeder per side
-   *
-   * Eksempel på svar:
-   * {
-   *   total: 12,
-   *   page: 2,
-   *   limit: 3,
-   *   data: [ { id, text, ... }, ... ]
-   * }
-   */
-
   try {
-    // 1. Læs alle beskeder fra fil
+    // 1. Læs alle beskeder fra fil (async/await)
     let messages = await readMessages();
 
     // 2. Filtrering på tekst (hvis ?search=tekst)
@@ -82,34 +81,49 @@ app.get("/messages", async (req, res) => {
       page,
       limit,
       data: paginatedMessages
-    });
+    }); // 200 OK - success
   } catch (error) {
-    res.status(500).json({ error: "Serverfejl ved hentning af beskeder." });
+    res.status(500).json({ error: "Serverfejl ved hentning af beskeder." }); // 500 - server error
   }
 });
 
-// GET /messages/:id - get message by id
+/**
+ * GET /messages/:id
+ * Request: GET /messages/1234
+ * Response (200): { "id": "1234", "text": "...", ... }
+ * Response (404): { "error": "Besked ikke fundet." }
+ *
+ * Statuskoder: 200 OK, 404 Not Found, 500 Server Error
+ */
 app.get("/messages/:id", async (req, res) => {
   try {
-    const messages = await readMessages();
+    const messages = await readMessages(); // async/await
     const messageId = req.params.id;
     const message = messages.find(message => message.id === messageId);
     if (!message) {
-      return res.status(404).json({ error: "Besked ikke fundet." });
+      return res.status(404).json({ error: "Besked ikke fundet." }); // 404 Not Found
     }
-    res.status(200).json(message);
+    res.status(200).json(message); // 200 OK - success
   } catch (error) {
-    res.status(500).json({ error: "Serverfejl ved hentning af besked." });
+    res.status(500).json({ error: "Serverfejl ved hentning af besked." }); // 500 - server error
   }
 });
 
-// POST /messages - add new message
+/**
+ * POST /messages
+ * Request: POST /messages
+ * Body: { "text": "Hej!", "sender": "user" }
+ * Response (201): { "id": "...", "date": "...", "text": "Hej!", "sender": "user" }
+ * Response (400): { "error": "Både 'text' og 'sender' skal udfyldes." }
+ *
+ * Statuskoder: 201 Created, 400 Bad Request, 500 Server Error
+ */
 app.post("/messages", async (req, res) => {
   try {
-    const messages = await readMessages();
+    const messages = await readMessages(); // async/await
     const { text, sender } = req.body;
     if (!text || !sender) {
-      return res.status(400).json({ error: "Både 'text' og 'sender' skal udfyldes." });
+      return res.status(400).json({ error: "Både 'text' og 'sender' skal udfyldes." }); // 400 Bad Request
     }
     const newMessage = {
       id: randomUUID(),
@@ -119,48 +133,64 @@ app.post("/messages", async (req, res) => {
     };
     messages.push(newMessage);
     await writeMessages(messages);
-    res.status(201).json(newMessage);
+    res.status(201).json(newMessage); // 201 Created - success
   } catch (error) {
-    res.status(500).json({ error: "Serverfejl ved oprettelse af besked." });
+    res.status(500).json({ error: "Serverfejl ved oprettelse af besked." }); // 500 - server error
   }
 });
 
-// PUT /messages/:id - update message
+/**
+ * PUT /messages/:id
+ * Request: PUT /messages/1234
+ * Body: { "text": "Opdateret besked", "sender": "user" }
+ * Response (200): { "id": "1234", "text": "Opdateret besked", ... }
+ * Response (400): { "error": "Både 'text' og 'sender' skal udfyldes." }
+ * Response (404): { "error": "Besked ikke fundet." }
+ *
+ * Statuskoder: 200 OK, 400 Bad Request, 404 Not Found, 500 Server Error
+ */
 app.put("/messages/:id", async (req, res) => {
   try {
-    const messages = await readMessages();
+    const messages = await readMessages(); // async/await
     const messageId = req.params.id;
     const message = messages.find(message => message.id === messageId);
     if (!message) {
-      return res.status(404).json({ error: "Besked ikke fundet." });
+      return res.status(404).json({ error: "Besked ikke fundet." }); // 404 Not Found
     }
     const { text, sender } = req.body;
     if (!text || !sender) {
-      return res.status(400).json({ error: "Både 'text' og 'sender' skal udfyldes." });
+      return res.status(400).json({ error: "Både 'text' og 'sender' skal udfyldes." }); // 400 Bad Request
     }
     message.text = text;
     message.sender = sender;
     await writeMessages(messages);
-    res.status(200).json(message);
+    res.status(200).json(message); // 200 OK - success
   } catch (error) {
-    res.status(500).json({ error: "Serverfejl ved opdatering af besked." });
+    res.status(500).json({ error: "Serverfejl ved opdatering af besked." }); // 500 - server error
   }
 });
 
-// DELETE /messages/:id - delete message
+/**
+ * DELETE /messages/:id
+ * Request: DELETE /messages/1234
+ * Response (200): { "message": "Besked slettet." }
+ * Response (404): { "error": "Besked ikke fundet." }
+ *
+ * Statuskoder: 200 OK, 404 Not Found, 500 Server Error
+ */
 app.delete("/messages/:id", async (req, res) => {
   try {
-    let messages = await readMessages();
+    let messages = await readMessages(); // async/await
     const messageId = req.params.id;
     const message = messages.find(message => message.id === messageId);
     if (!message) {
-      return res.status(404).json({ error: "Besked ikke fundet." });
+      return res.status(404).json({ error: "Besked ikke fundet." }); // 404 Not Found
     }
     messages = messages.filter(message => message.id !== messageId);
     await writeMessages(messages);
-    res.status(200).json({ message: "Besked slettet." });
+    res.status(200).json({ message: "Besked slettet." }); // 200 OK - success
   } catch (error) {
-    res.status(500).json({ error: "Serverfejl ved sletning af besked." });
+    res.status(500).json({ error: "Serverfejl ved sletning af besked." }); // 500 - server error
   }
 });
 
