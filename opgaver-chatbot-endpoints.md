@@ -6,22 +6,7 @@
 
 Forestil dig, at du bygger en chatbot eller chat-app, hvor brugeren kan have flere samtaler (chats) – fx "Dagens vejrudsigt" eller "Teknisk support". Hver chat har sin egen historik af beskeder mellem bruger og chatbot.
 
-Derfor gemmer vi data som en liste af chats, hvor hver chat har et id, en titel, en dato og en liste af beskeder. Hver besked har også et id, tekst, afsender og tidspunkt.
-
-**Refleksion:**
-
-- Hvorfor er det smart at gemme chats og beskeder på denne måde?
-- Hvilke fordele giver det, hvis du senere vil vise en oversigt over chats, eller analysere samtaler?
-- Kan du forestille dig andre apps eller systemer, der bruger lignende datastrukturer?
-
----
-
-## 2. Opret din egen chats.json-fil
-
-Nu skal du selv oprette filen, så du kan arbejde videre med data.
-
-1. Opret en ny fil i mappen `data` med navnet `chats.json`.
-2. Kopiér og indsæt følgende eksempeldata i filen:
+Derfor gemmer vi data som en liste af chats, hvor hver chat har et `id`, en `title`, en `date` og en liste af beskeder (`messages`). Hver besked har også et `id`, `text`, `sender` og `date`. Her er et eksempel:
 
 ```json
 [
@@ -66,6 +51,20 @@ Nu skal du selv oprette filen, så du kan arbejde videre med data.
 ]
 ```
 
+
+**Refleksion:**
+- Hvorfor er det smart at gemme chats og beskeder på denne måde?
+- Hvilke fordele giver det, hvis du senere vil vise en oversigt over chats, eller analysere samtaler?
+- Kan du forestille dig andre apps eller systemer, der bruger lignende datastrukturer?
+
+---
+
+## 2. Opret din egen chats.json-fil
+
+Nu skal du selv oprette filen, så du kan arbejde videre med data.
+
+1. Opret en ny fil i mappen `data` med navnet `chats.json`.
+2. Kopiér og indsæt eksempeldata i filen. Du kan kopiere data fra *1. Introduktion til chats-datastrukturen*. 
 3. Gem filen.
 
 ---
@@ -75,7 +74,6 @@ Nu skal du selv oprette filen, så du kan arbejde videre med data.
 Når du har oprettet `chats.json`, så prøv at læse og forstå datastrukturen.
 
 ### Opgaver:
-
 1. Hvor mange chats er der i eksemplet?
 2. Hvad er titlen på den første chat?
 3. Hvor mange beskeder er der i den første chat?
