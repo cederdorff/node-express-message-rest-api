@@ -1,4 +1,4 @@
-# Step-by-step: Filtrering, Sortering & Paginering af beskeder
+# Filtrering, Sortering & Paginering af beskeder
 
 Denne guide hjælper dig med at bygge et REST endpoint, hvor du trin-for-trin tilføjer filtrering, sortering og paginering. Hvert trin skal implementeres og testes, før du går videre.
 
@@ -6,7 +6,7 @@ Denne guide hjælper dig med at bygge et REST endpoint, hvor du trin-for-trin ti
 
 ## 1. Filtrering af beskeder
 
-**Mål:** Udvid din GET /messages-route, så du kan filtrere beskeder baseret på tekst (`text`) i beskeden (en `message`).
+**Mål:** Udvid din GET `/messages`-route, så du kan filtrere beskeder baseret på tekst (`text`) i beskeden (`message`-objektet).
 
 ### Step 1: Forstå og brug `req.query`
 
@@ -22,12 +22,15 @@ Denne guide hjælper dig med at bygge et REST endpoint, hvor du trin-for-trin ti
 
 - `.filter()` bruges til at lave et nyt array med kun de elementer der opfylder en betingelse.
 - Prøv i en separat fil eller browser-konsollen:
-
   - `[1,2,3,4].filter(n => n > 2)`
   - Hvad får du tilbage?
 
-- Filtrering på et array af objekter. Forestil dig at du har dette array:
+**Du kan læse mere om `.filter` her:**
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+- https://www.w3schools.com/jsref/jsref_filter.asp 
 
+
+- Filtrering på et array af objekter. Forestil dig at du har dette array:
 ```js
 const persons = [
   { name: "Anna", age: 22 },
@@ -41,7 +44,6 @@ const persons = [
 - Brug `.filter()` til at finde alle personer hvor navnet indeholder "a" (store/små bogstaver er ligegyldigt).
 
 **Test:**
-
 - Hvilket array får du hvis du filtrerer på age > 18?
 - Hvilket array får du hvis du filtrerer på name indeholder "a"?
 
