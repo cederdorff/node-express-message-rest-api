@@ -36,18 +36,6 @@ app.get("/messages", async (req, res) => {
   res.json(messages);
 });
 
-// GET /messages/search?text=hello - search messages by text
-app.get("/messages/search", async (req, res) => {
-  console.log("Search query:", req.query.text); // Log the search query
-
-  const messages = await readMessages(); // Read all messages
-  const searchText = req.query.text.toLowerCase(); // Get search text from query params
-
-  // Filter messages containing the search text (case-insensitive)
-  const filteredMessages = messages.filter(message => message.text.toLowerCase().includes(searchText));
-  res.json(filteredMessages); // Return filtered messages
-});
-
 // GET /messages/:id - get message by id
 app.get("/messages/:id", async (req, res) => {
   const messages = await readMessages();
