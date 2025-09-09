@@ -6,13 +6,13 @@ Denne guide hjælper dig med at bygge et REST endpoint, hvor du trin-for-trin ti
 
 ## 1. Filtrering af beskeder
 
-**Mål:** Udvid din GET /messages-route, så du kan filtrere beskeder baseret på tekst i beskeden.
+**Mål:** Udvid din GET /messages-route, så du kan filtrere beskeder baseret på tekst (`text`) i beskeden (en `message`).
 
 ### Step 1: Forstå og brug `req.query`
 
 - Tilføj `console.log(req.query)` i din route.
 - Besøg fx `/messages?search=hej` og se hvad der logges i terminalen.
-- **Spørgsmål:** Hvad indeholder `req.query` hvis du ikke har nogen query params? Hvad hvis du har flere?
+- **Spørgsmål:** Hvad indeholder `req.query` hvis du ikke har nogen query params? Hvad hvis du har flere? Prøv fx `/messages?search=hej&foo=bar&underviser=hamMedArmen`
 <details>
 <summary>💡 Hint</summary>
 `req.query` er et objekt, hvor hver query parameter i URL'en bliver til en property. Prøv fx `/messages?search=hej&foo=bar` og se hvad der logges.
@@ -21,9 +21,32 @@ Denne guide hjælper dig med at bygge et REST endpoint, hvor du trin-for-trin ti
 ### Step 2: Forstå `.filter()`
 
 - `.filter()` bruges til at lave et nyt array med kun de elementer der opfylder en betingelse.
-- Prøv i en separat fil eller i Node REPL:
+- Prøv i en separat fil eller browser-konsollen:
   - `[1,2,3,4].filter(n => n > 2)`
   - Hvad får du tilbage?
+
+- Filtrering på et array af objekter. Forestil dig at du har dette array:
+```js
+const persons = [
+  { name: "Anna", age: 22 },
+  { name: "Bo", age: 17 },
+  { name: "Carla", age: 30 },
+  { name: "David", age: 15 }
+];
+```
+- Brug `.filter()` til at finde alle personer over 18 år.
+- Brug `.filter()` til at finde alle personer hvor navnet indeholder "a" (store/små bogstaver er ligegyldigt).
+
+**Test:**
+- Hvilket array får du hvis du filtrerer på age > 18?
+- Hvilket array får du hvis du filtrerer på name indeholder "a"?
+
+<details>
+<summary>💡 Hint til persons-opgaven</summary>
+- For age: Brug `person.age > 18` i filter-funktionen.
+- For name: Brug `person.name.toLowerCase().includes("a")` i filter-funktionen.
+</details>
+
 - Forestil dig at du har et array af besked-objekter. Hvordan kan du bruge `.filter()` til at vælge dem hvor tekst indeholder et bestemt ord?
 <details>
 <summary>💡 Hint</summary>
@@ -51,7 +74,7 @@ Du skal altid afslutte din route med at sende et svar til klienten. Her skal du 
 
 ### Test
 
-- Prøv `/messages?search=hej` og tjek at du kun får beskeder med “hej” i teksten.
+- Prøv `/messages?search=hej` og tjek at du kun får beskeder med “hej” i teksten (du skal selvfølgelig have en `message` med `text` indeholdende "hej").
 - Prøv også at søge med store bogstaver og se om det stadig virker.
 
 <details>
