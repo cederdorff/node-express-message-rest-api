@@ -65,7 +65,8 @@ Nu skal du selv oprette filen, så du kan arbejde videre med data.
 
 1. Opret en ny fil i mappen `data` med navnet `chats.json`.
 2. Kopiér og indsæt eksempeldata i filen. Du kan kopiere data fra *1. Introduktion til chats-datastrukturen*. 
-3. Gem filen.
+3. Tilføj gerne mere testdata, så du har flere `chats` med flere `messages`. Sørg for at holde samme struktur. 
+4. Gem filen.
 
 ---
 
