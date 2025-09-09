@@ -136,7 +136,7 @@ Brug `message.sender && message.sender.toLowerCase().includes(req.query.sender.t
 ### Step 2: Forstå `.sort()` og arrow function
 
 - `.sort()` bruges til at sortere et array. Den tager en funktion som argument, der bestemmer rækkefølgen.
-- Prøv i Node REPL eller en separat fil:
+- Prøv i browser-konsollen eller en separat fil:
   - `[3,1,2].sort((a,b) => a-b)`
   - Hvad får du tilbage?
 - Forestil dig at du har et array af besked-objekter. Hvordan kan du bruge `.sort()` til at sortere efter dato?
@@ -202,7 +202,7 @@ Hvis du ikke angiver dem, vil værdierne være `undefined`. Du kan sætte en sta
 
 - Query parametre er altid strings! Brug `parseInt()` for at lave dem om til tal.
 - Brug `||` til at sætte en standardværdi, fx 1 for page og fx messages.length for limit.
-- Prøv i Node REPL: `parseInt("2")`, `parseInt(undefined)`, `parseInt("hej")`.
+- Prøv i browser-konsollen: `parseInt("2")`, `parseInt(undefined)`, `parseInt("hej")`.
 - **Spørgsmål:** Hvorfor er det vigtigt at bruge `parseInt()` og default-værdier?
 <details>
 <summary>💡 Hint</summary>
@@ -214,7 +214,7 @@ Hvis du ikke laver dem om til tal, kan du få mærkelige resultater når du regn
 - Udregn hvilket index i arrayet der er start og slut for den side du vil vise.
 - Formlen er: `start = (page - 1) * limit`, `end = start + limit`.
 - Brug `.slice(start, end)` på arrayet af beskeder for at få det rigtige udsnit.
-- Prøv i Node REPL: `[1,2,3,4,5,6].slice(2,5)`
+- Prøv i browser-konsollen: `[1,2,3,4,5,6].slice(2,5)`
 - **Spørgsmål:** Hvad returnerer `.slice()`?
 <details>
 <summary>💡 Hint</summary>
