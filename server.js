@@ -31,27 +31,26 @@ app.get("/", (request, response) => {
 });
 
 // GET /messages - get all messages
+/**
+ * GET /messages
+ * Eksempel på brug:
+ *   /messages?search=hej&sort=-date&page=2&limit=3
+ *
+ * Query params:
+ *   search: filtrer på tekst
+ *   sort: "date" (ældste først) eller "-date" (nyeste først)
+ *   page: sidetal (starter fra 1)
+ *   limit: antal beskeder per side
+ *
+ * Eksempel på svar:
+ * {
+ *   total: 12,
+ *   page: 2,
+ *   limit: 3,
+ *   data: [ { id, text, ... }, ... ]
+ * }
+ */
 app.get("/messages", async (req, res) => {
-  /**
-   * GET /messages
-   * Eksempel på brug:
-   *   /messages?search=hej&sort=-date&page=2&limit=3
-   *
-   * Query params:
-   *   search: filtrer på tekst
-   *   sort: "date" (ældste først) eller "-date" (nyeste først)
-   *   page: sidetal (starter fra 1)
-   *   limit: antal beskeder per side
-   *
-   * Eksempel på svar:
-   * {
-   *   total: 12,
-   *   page: 2,
-   *   limit: 3,
-   *   data: [ { id, text, ... }, ... ]
-   * }
-   */
-
   // 1. Læs alle beskeder fra fil
   let messages = await readMessages();
 
