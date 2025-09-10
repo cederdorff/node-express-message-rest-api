@@ -200,3 +200,44 @@ app.options("/messages", cors()); // Svar på preflight for /messages
 
 - Brug altid restriktiv CORS i produktion.
 - Test CORS med frontend i browseren – fejl vises i konsollen.
+
+---
+
+## Eksempler: Requests fra klienten (JavaScript)
+
+Her er eksempler på hvordan du laver requests fra browseren til en CORS-beskyttet API:
+
+### 1. Simpel fetch-request (ingen credentials)
+
+```js
+fetch("https://api.mit-domæne.dk/messages")
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.error("CORS-fejl eller netværksfejl", err));
+```
+
+### 2. Fetch med credentials (cookies, login)
+
+Hvis du vil sende cookies eller authentication headers, skal du bruge `credentials: 'include'`:
+
+```js
+fetch("https://api.mit-domæne.dk/private", {
+  credentials: "include"
+})
+  .then(res => res.json())
+  .then(data => console.log(data));
+```
+
+### 3. Eksempel på CORS-fejl i browseren
+
+Hvis CORS ikke er sat korrekt op på serveren, får du en fejl i browserens konsol, fx:
+
+```
+Access to fetch at 'https://api.mit-domæne.dk/messages' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+### 4. Håndtering af preflight (OPTIONS)
+
+Hvis du bruger custom headers eller credentials, sender browseren automatisk en preflight-request. Det kræver ingen ekstra kode på klienten – men serveren skal svare korrekt.
+
+---
