@@ -71,11 +71,11 @@ app.get("/messages", async (req, res) => {
   }
 
   // 4. Paginering (?page=1&limit=10)
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || messages.length;
-  const start = (page - 1) * limit;
-  const end = start + limit;
-  const paginatedMessages = messages.slice(start, end);
+  const page = parseInt(req.query.page) || 1; // Default: side 1
+  const limit = parseInt(req.query.limit) || messages.length; // Default: vis alle beskeder
+  const start = (page - 1) * limit; // Why? because page 1 starts at index 0, page 2 starts at index limit, page 3 starts at index 2*limit, etc.
+  const end = start + limit; // non-inclusive
+  const paginatedMessages = messages.slice(start, end); // Hent beskeder for den aktuelle side
 
   // 5. Returnér samlet antal, side, limit og data
   res.json({
