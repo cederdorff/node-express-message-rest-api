@@ -123,7 +123,7 @@ Brug `message.sender && message.sender.toLowerCase().includes(req.query.sender.t
 
 ## 2. Sortering af beskeder
 
-**Mål:** Udvid nu din GET /messages-route, så du kan sortere beskeder efter dato.
+**Mål:** Udvid nu din GET `/messages`-route, så du kan sortere beskeder efter dato.
 
 ### Step 1: Forstå og brug `req.query.sort`
 
@@ -146,6 +146,11 @@ Brug `message.sender && message.sender.toLowerCase().includes(req.query.sender.t
 <summary>💡 Hint</summary>
 Sammenligningsfunktionen skal returnere et negativt tal, 0 eller et positivt tal. Prøv at sammenligne to datoer med `new Date(a.date) - new Date(b.date)`.
 </details>
+
+
+**Du kan læse mere om .sort() her:**
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort 
+
 
 ### Step 3: Implementér sortering i din route
 
@@ -180,7 +185,7 @@ if (req.query.sort === "-date") {
 
 ## 3. Paginering af beskeder
 
-**Mål:** Udvid nu din GET /messages-route, så du kan paginere beskeder (vise et udsnit ad gangen).
+**Mål:** Udvid nu din GET `/messages`-route, så du kan paginere beskeder (vise et udsnit ad gangen).
 
 ### Step 1: Forstå paginering
 
@@ -211,6 +216,9 @@ Hvis du ikke angiver dem, vil værdierne være `undefined`. Du kan sætte en sta
 Hvis du ikke laver dem om til tal, kan du få mærkelige resultater når du regner med dem. Default-værdier sikrer at din kode virker selvom brugeren ikke angiver page/limit.
 </details>
 
+**Du kan læse mere om `.parseInt()` her:**
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+
 ### Step 4: Udregn start og end, brug `.slice()`
 
 - Udregn hvilket index i arrayet der er start og slut for den side du vil vise.
@@ -222,6 +230,10 @@ Hvis du ikke laver dem om til tal, kan du få mærkelige resultater når du regn
 <summary>💡 Hint</summary>
 `.slice(start, end)` returnerer et nyt array med elementerne fra start til (men ikke med) end.
 </details>
+
+Læs mere om `.slice()` her:
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
+
 
 ### Step 5: Implementér paginering i din route
 
