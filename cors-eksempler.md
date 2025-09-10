@@ -95,7 +95,7 @@ app.get("/messages", cors(), (req, res) => {
 
 ## 4. CORS med credentials (cookies, auth)
 
-Hvis din frontend skal sende cookies eller authentication headers til din API, skal du både tillade credentials og angive et specifikt origin (ikke '*').
+Hvis din frontend skal sende cookies eller authentication headers til din API, skal du både tillade credentials og angive et specifikt origin (ikke '\*').
 
 Vil du tillade cookies eller authentication headers, skal du sætte både `credentials: true` og `origin` til en specifik værdi (ikke `*`).
 
