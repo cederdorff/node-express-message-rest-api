@@ -1,6 +1,11 @@
 # Eksempler på CORS i Express
 
-CORS (Cross-Origin Resource Sharing) bruges til at styre, hvilke domæner der må tilgå din API fra browseren. Her er en progression fra de simpleste til de mere avancerede måder at konfigurere CORS i Express på:
+CORS (Cross-Origin Resource Sharing) bruges til at styre, hvilke domæner der må tilgå din API fra browseren. Her er en progression fra de simpleste til de mere avancerede måder at konfigurere CORS i Express på.
+
+### Om Test af CORS
+
+Når du tester fra browser eller Thunder Client/Postman på din egen maskine, vil CORS ikke blokere dig, fordi både frontend og backend kører lokalt.  
+Hvis du prøver at tilgå API’et fra et andet domæne (fx en ekstern frontend), vil du kunne teste CORS-opsætning.
 
 ---
 
