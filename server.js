@@ -3,6 +3,8 @@ import express from "express";
 import fs from "fs/promises";
 import cors from "cors";
 import { randomUUID } from "crypto";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 // ========== Setup Express App ========== //
 const app = express();
@@ -11,6 +13,47 @@ const PORT = 3000;
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
 app.use(cors()); // Enable CORS for all routes - allow requests from any origin
+
+// Dummy user (i praksis: fra database)
+const DUMMY_USER = {
+  username: "test",
+  // bcrypt hash for "hemmeligt"
+  passwordHash: "$2b$10$T5TPyRwsYQVEXJgoHJq/Qu3MdYyW4FIQD8N1DosHXSj52bDZsArai"
+};
+
+const JWT_SECRET = "MEGET_HEMMELIGT_SECRET";
+
+// Middleware: Tjek JWT token
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Token mangler" });
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ error: "Token ugyldig" });
+    req.user = user;
+    next();
+  });
+}
+// ========== Login Endpoint ========== //
+/**
+ * POST /login
+ * Body: { "username": "test", "password": "hemmeligt" }
+ * Response: { "token": "..." }
+ */
+app.post("/login", async (req, res) => {
+  console.log("Login attempt:", req.body);
+
+  const { username, password } = req.body;
+  if (username !== DUMMY_USER.username) {
+    return res.status(401).json({ error: "Forkert brugernavn eller kodeord" });
+  }
+  const valid = await bcrypt.compare(password, DUMMY_USER.passwordHash);
+  if (!valid) {
+    return res.status(401).json({ error: "Forkert brugernavn eller kodeord" });
+  }
+  const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
+  res.json({ token });
+});
 
 // ========== File Helper Operations ========== //
 // Helper: Read messages from file
@@ -50,7 +93,8 @@ app.get("/", (request, response) => {
  *
  * Statuskoder: 200 OK, 500 Server Error
  */
-app.get("/messages", async (req, res) => {
+// Beskyt /messages med JWT auth
+app.get("/messages", authenticateToken, async (req, res) => {
   try {
     // 1. Læs alle beskeder fra fil (async/await)
     let messages = await readMessages();
@@ -118,7 +162,8 @@ app.get("/messages/:id", async (req, res) => {
  *
  * Statuskoder: 201 Created, 400 Bad Request, 500 Server Error
  */
-app.post("/messages", async (req, res) => {
+// Beskyt opret, opdater og slet besked med JWT-auth
+app.post("/messages", authenticateToken, async (req, res) => {
   try {
     const messages = await readMessages(); // async/await
     const { text, sender } = req.body;
@@ -149,7 +194,7 @@ app.post("/messages", async (req, res) => {
  *
  * Statuskoder: 200 OK, 400 Bad Request, 404 Not Found, 500 Server Error
  */
-app.put("/messages/:id", async (req, res) => {
+app.put("/messages/:id", authenticateToken, async (req, res) => {
   try {
     const messages = await readMessages(); // async/await
     const messageId = req.params.id;
@@ -178,7 +223,7 @@ app.put("/messages/:id", async (req, res) => {
  *
  * Statuskoder: 200 OK, 404 Not Found, 500 Server Error
  */
-app.delete("/messages/:id", async (req, res) => {
+app.delete("/messages/:id", authenticateToken, async (req, res) => {
   try {
     let messages = await readMessages(); // async/await
     const messageId = req.params.id;
