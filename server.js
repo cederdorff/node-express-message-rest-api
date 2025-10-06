@@ -140,63 +140,6 @@ app.post("/threads/:id/messages", async (req, res) => {
   }
 });
 
-// GET /messages - get all messages
-app.get("/messages", async (req, res) => {
-  const messages = await readMessages();
-  res.json(messages);
-});
-
-// GET /messages/:id - get message by id
-app.get("/messages/:id", async (req, res) => {
-  const messages = await readMessages();
-  const messageId = req.params.id;
-  const message = messages.find(message => message.id === messageId);
-  res.json(message);
-});
-
-// POST /messages - add new message
-app.post("/messages", async (req, res) => {
-  const messages = await readMessages();
-  const { text, sender } = req.body;
-
-  const newMessage = {
-    id: randomUUID(),
-    date: new Date().toISOString(),
-    text,
-    sender
-  };
-
-  messages.push(newMessage);
-  writeMessages(messages);
-
-  res.json(newMessage);
-});
-
-// PUT /messages/:id - update message
-app.put("/messages/:id", async (req, res) => {
-  const messages = await readMessages();
-  const messageId = req.params.id;
-  const message = messages.find(message => message.id === messageId);
-
-  const { text, sender } = req.body;
-  message.text = text;
-  message.sender = sender;
-
-  writeMessages(messages);
-  res.json(message);
-});
-
-// DELETE /messages/:id - delete message
-app.delete("/messages/:id", async (req, res) => {
-  let messages = await readMessages();
-  const messageId = req.params.id;
-
-  messages = messages.filter(message => message.id !== messageId);
-
-  writeMessages(messages);
-  res.json(messages);
-});
-
 // ========== Start the server ========== //
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
