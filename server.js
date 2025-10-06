@@ -144,5 +144,5 @@ app.post("/threads/:id/messages", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log(`App is running on http://localhost:${PORT}`);
-  console.log(`Messages Endpoint http://localhost:${PORT}/messages`);
+  console.log(`Messages Endpoint http://localhost:${PORT}/threads`);
 });
